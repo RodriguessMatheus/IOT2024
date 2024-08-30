@@ -11,3 +11,4 @@ void callback(char *topic, byte *payload, unsigned int length);
 void reconecta_mqtt();
 void tratar_msg(char *topic, String msg);
 
+void verifica_boot();
