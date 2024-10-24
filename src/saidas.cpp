@@ -1,24 +1,34 @@
 #include <Arduino.h>
+#include <ESP32Servo.h>
 #include "saidas.h"
+#include "entradas.h"
 
-//Definição dos pinos dos leds
-#define LedBuiltInPin 2
-#define LedExterno 25
+// Definição dos pinos dos leds e do servo
+#define LED_SINAL_PIN 34    // Pino para o LED
 
-//Variaveis de controle dos leds
-bool LedBuiltInState = LOW;
-bool LedExternoState = LOW;
+bool estadoLed = false; // Definição e inicialização
 
-//Inicializa as saídas digitais
+// Inicializa as saídas digitais
 void inicializa_saidas()
 {
-    pinMode(LedBuiltInPin, OUTPUT);
-    pinMode(LedExterno, OUTPUT);
+  pinMode(LED_SINAL_PIN , OUTPUT);
 }
 
-//Atualiza as saídas digitais
+// Atualiza as saídas digitais
 void atualiza_saidas()
 {
-    digitalWrite(LedBuiltInPin, LedBuiltInState);
-    digitalWrite(LedExterno, LedExternoState);
+  // Atualiza o estado do umidificador
+  if (botao_pressionado())
+  {
+    digitalWrite(LED_SINAL_PIN , HIGH);
+
+      bool estadoLed = digitalRead(LED_SINAL_PIN);
+      Serial.println(estadoLed);
+  }
+   
+  
+  else if (botao_solto())
+  {
+    digitalWrite(LED_SINAL_PIN , LOW);
+  }
 }

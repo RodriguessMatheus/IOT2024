@@ -4,4 +4,6 @@
 int randomiza_senha();
 void tempoSenhaEstendido();
 
+void inicializaSensorTinta();
+void medirNivelTinta();
 #endif
