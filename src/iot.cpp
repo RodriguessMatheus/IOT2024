@@ -5,12 +5,14 @@
 #include <WiFiClientSecure.h>
 #include <ArduinoJson.h>
 #include <TimeLib.h>
+#include <ESP32Servo.h>
 #include "iot.h"
 #include "senhas.h"
 #include "saidas.h"
 #include "atuadores.h"
 #include "funcoes.h"
 #include "umidificador.h"
+#include "motorDC.h"
 
 #define USUARIO_PADRAO "!@#$%^&*()xym"
 
@@ -21,6 +23,7 @@
 
 // ID do cliente MQTT (gerado randomicamente)
 const String cliente_id = "ESP32Client_" + String(random(0xffff), HEX);
+
 
 
 // Variáveis globais
@@ -173,18 +176,39 @@ void tratar_msg(char *topic, String msg)
             tempoSenhaEstendido(); //estende o tempo da senha, ao espirar o usuario autorizado volta a ser o padrao
 
             //! ******** USUARIO AUTORIZADO APARTIR DAQUI ***********/
-            if (doc.containsKey("LedSinal"))
+            if (doc.containsKey("LedSinal")) 
             {
              estadoLed = doc["LedSinal"];
             }
+          }
             
-            if (doc.containsKey("Umidificador"))
+                // Controle do umidificador através do JSON
+                    if (doc.containsKey("Umidificador")) // Se o campo Umidificador estiver presente
+                    {
+                        String acaoUmidificador = doc["Umidificador"]; // "ligar" ou "desligar"
+                        
+                        if (acaoUmidificador == "ligar")
+                        {
+                            // Chama a função para pulsar o umidificador
+                            pulsoUmidificador();
+                        }
+                        else if (acaoUmidificador == "desligar")
+                        {
+                            desligaUmidificador();
+                        }
+                    }
+              // Controle do servo através do JSON
+            if (doc.containsKey("portaAberta")) // Se o campo porta estiver presente
             {
-              travaPulso = doc["Umidificador"];
-            }
-            
+              String acaoPorta = doc["portaAberta"]; // "abrir" ou "fechar"
               
+              if (acaoPorta == "abrir")
+              {
+                Servoloop();
+              }
+             
               
+               
           
 
             //! ******** USUARIO AUTORIZADO ATÉ AQUI ***********/

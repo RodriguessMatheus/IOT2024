@@ -51,6 +51,7 @@ void setup()
   inicializaSensorTinta();
   MotorSetup();
   Servosetup();
+   
 }
 
 void loop()
@@ -65,6 +66,8 @@ void loop()
   medirNivelTinta();
   Motorloop();
   Servoloop();
+  
+  
 
   JsonDocument doc;
   String json;
@@ -78,7 +81,7 @@ void loop()
     doc["timeStamp"] = timeStamp();
     doc["LedSinal"] = estadoLed;
     doc["UmidificadorState"] = umidificadorLigado; // Estado do umidificador
-    doc["nivelTinta"] = distanciaMedida / 1;       // Valor medido do nível de tinta
+    doc["nivelTinta"] = round(distanciaMedida * 10) / 10.0;
     doc["motorDC"] = motorLigado;                  // Estado do motor DC
     doc["portaAberta"] = portaAberta;              // Estado da porta
 

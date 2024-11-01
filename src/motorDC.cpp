@@ -9,8 +9,8 @@ void motorForward(int speed);
 void motorStop();
 
 // Definir pinos de controle do motor e o botão
-int in1 = 25;      // IN1 do L298N
-int in2 = 26;      // IN2 do L298N
+int in1 = 13;      // IN1 do L298N
+int in2 = 12;      // IN2 do L298N
 int buttonPin = 0; // Botão BOOT (GPIO 0 no ESP32)
 
 // Variáveis para o canal PWM no ESP32
