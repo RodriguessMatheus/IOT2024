@@ -24,7 +24,7 @@
 #include "umidificador.h"
 #include "motorDC.h"
 #include "atuadores.h"
-
+#include "dhtt.h"
 // Definição dos tópicos de publicação
 #define mqtt_pub_topic1 "projeto/dados"
 
@@ -51,6 +51,7 @@ void setup()
   inicializaSensorTinta();
   MotorSetup();
   Servosetup();
+  setupDHT();
    
 }
 
@@ -66,6 +67,7 @@ void loop()
   medirNivelTinta();
   Motorloop();
   Servoloop();
+  loopDHT();
   
   
 
@@ -84,6 +86,10 @@ void loop()
     doc["nivelTinta"] = round(distanciaMedida * 10) / 10.0;
     doc["motorDC"] = motorLigado;                  // Estado do motor DC
     doc["portaAberta"] = portaAberta;              // Estado da porta
+    doc["UmidadeSalaDeControle"] = humidityControle;
+    doc["TemperaturaSalaDeControle"] = temperatureControle;
+    doc["UmidadeOperação"] = humidityOperacao;
+    doc["TemperaturaOperacao"] = temperatureOperacao;
 
     mensagemPendente = true;
   }
